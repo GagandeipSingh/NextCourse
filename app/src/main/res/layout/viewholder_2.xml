@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="93dp"
+    android:layout_marginStart="13dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginEnd="13dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/list_bg_1">
+
+
+    <ImageView
+        android:id="@+id/ImageBehind"
+        android:layout_width="280dp"
+        android:layout_height="90dp"
+        android:layout_marginEnd="1dp"
+        android:contentDescription="@string/book_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/book_bg1" />
+
+    <ImageView
+        android:id="@+id/ImageAhead"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:contentDescription="@string/books"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ImageContrastCheck"
+        tools:srcCompat="@drawable/filelogo" />
+
+    <TextView
+        android:id="@+id/Filename"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/filename"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/ImageAhead"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/AssignDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/date"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="@+id/Filename"
+        app:layout_constraintTop_toBottomOf="@+id/Filename" />
+
+    <TextView
+        android:id="@+id/LastDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/date"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="@+id/AssignDate"
+        app:layout_constraintStart_toEndOf="@+id/AssignDate"
+        app:layout_constraintTop_toTopOf="@+id/AssignDate" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
