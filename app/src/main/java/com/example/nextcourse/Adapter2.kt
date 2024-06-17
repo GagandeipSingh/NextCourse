@@ -19,8 +19,8 @@ class Adapter2(private var dataList: ArrayList<Domain2>, var context : Context) 
         holder.binding.ImageAhead.setImageResource(R.drawable.filelogo)
         holder.binding.ImageBehind.setImageResource(dataList[position%6].picBg)
         holder.binding.Filename.text = (dataList[position].fileName)
-        holder.binding.AssignDate.text = String.format("A: %s", dataList[position].assignDate)
-        holder.binding.LastDate.text = String.format("L: %s", dataList[position].lastDate)
+        holder.binding.AssignDate.text = String.format("A : %s", dataList[position].assignDate)
+        holder.binding.LastDate.text = String.format("L : %s", dataList[position].lastDate)
         dataList[position].fileName
         val fileUri = dataList[position].uri
         holder.itemView.setOnClickListener{

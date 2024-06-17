@@ -18,6 +18,8 @@ class JoinClassActivity : BaseActivity() {
     private lateinit var userName: String
     private lateinit var userEmail: String
     private lateinit var userId: String
+    private lateinit var creator : String
+    private lateinit var key :String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -57,11 +59,15 @@ class JoinClassActivity : BaseActivity() {
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var isClassIdFound = false
-                for (userIdSnapshot in snapshot.children) {
-                    if(userIdSnapshot.key == userId) continue // Skip the current user's classes
-                    val classesSnapshot = userIdSnapshot.children
+                    val classesSnapshot = snapshot.children
                     for (classIdSnapshot in classesSnapshot) {
-                        if (classIdSnapshot.key == classId) {
+                        val classData = classIdSnapshot.getValue(ClassDomain1::class.java)
+                        classData?.let {
+                            creator = it.creator
+                            key = classIdSnapshot.key.toString()
+                        }
+                        if(userId == creator) break // Skip the current user's classes
+                        if (key == classId) {
                             classIdSnapshot.ref.child("Students").child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(studentSnapshot: DataSnapshot) {
                                     if (studentSnapshot.exists()) {
@@ -80,12 +86,42 @@ class JoinClassActivity : BaseActivity() {
                             break
                         }
                     }
-                    if (isClassIdFound) break
-                }
+
                 if (!isClassIdFound) {
                     Toast.makeText(this@JoinClassActivity,"Class Not Found",Toast.LENGTH_SHORT).show()
                 }
             }
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                var isClassIdFound = false
+//                for (userIdSnapshot in snapshot.children) {
+//                    if(userIdSnapshot.key == userId) continue // Skip the current user's classes
+//                    val classesSnapshot = userIdSnapshot.children
+//                    for (classIdSnapshot in classesSnapshot) {
+//                        if (classIdSnapshot.key == classId) {
+//                            classIdSnapshot.ref.child("Students").child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
+//                                override fun onDataChange(studentSnapshot: DataSnapshot) {
+//                                    if (studentSnapshot.exists()) {
+//                                        Toast.makeText(this@JoinClassActivity,"Already Joined..",Toast.LENGTH_SHORT).show()
+//                                    } else {
+//                                        classIdSnapshot.ref.child("Students").child(userId).setValue(userId) // Add the current user's ID to the 'Students' subnode of the found class ID
+//                                        Toast.makeText(this@JoinClassActivity,"Successfully Added..",Toast.LENGTH_SHORT).show()
+//                                        finish()
+//                                    }
+//                                }
+//
+//                                override fun onCancelled(databaseError: DatabaseError) {
+//                                }
+//                            })
+//                            isClassIdFound = true
+//                            break
+//                        }
+//                    }
+//                    if (isClassIdFound) break
+//                }
+//                if (!isClassIdFound) {
+//                    Toast.makeText(this@JoinClassActivity,"Class Not Found",Toast.LENGTH_SHORT).show()
+//                }
+//            }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Handle possible errors.

@@ -4,8 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
@@ -34,6 +34,9 @@ class FileUploadActivity : BaseActivity() {
     private lateinit var adate: String
     private lateinit var ldate: String
     private lateinit var auth: FirebaseAuth
+    private lateinit var userId:String
+    private lateinit var keyRef:String
+    private lateinit var creator:String
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +46,18 @@ class FileUploadActivity : BaseActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
         val scrollView = binding.scrollView
-
+        keyRef = intent.getStringExtra("classRef").toString()
+        creator = intent.getStringExtra("creator").toString()
+        userId = auth.currentUser?.uid.toString()
+        if(userId != creator){
+            binding.adate.setText(getString(R.string.empty))
+            binding.adate.visibility = View.GONE
+            val density = resources.displayMetrics.density
+            val pixelValue = 20 * density
+            val layoutParams = binding.tilLDate.layoutParams as ViewGroup.MarginLayoutParams
+            layoutParams.topMargin = pixelValue.toInt()
+            binding.tilLDate.layoutParams = layoutParams
+        }
         val sectionFocusListener = View.OnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 scrollView.post {
@@ -68,13 +82,8 @@ class FileUploadActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val keyRef = intent.getStringExtra("classRef").toString()
-        Log.d("KeyRef", keyRef)
-        val userId = auth.currentUser?.uid
         storageReference = FirebaseStorage.getInstance().getReference()
-        if (userId != null) {
-            databaseReference = FirebaseDatabase.getInstance().getReference("Classes").child(userId).child("$keyRef/Files")
-        }
+        databaseReference = FirebaseDatabase.getInstance().getReference("Classes").child("$keyRef/Files")
         binding.uploadSelected.visibility = View.INVISIBLE
         binding.cancel.visibility = View.INVISIBLE
 
@@ -145,17 +154,15 @@ class FileUploadActivity : BaseActivity() {
             .addOnSuccessListener {
                 storageRef.downloadUrl.addOnSuccessListener {
                     val fileVar = FileDomain2(fileName, adate, ldate, it.toString())
-                    val key = databaseReference.push().key
-                    if (key != null) {
-                        databaseReference.child(key).setValue(fileVar)
-                            .addOnSuccessListener {
-                                Toast.makeText(this@FileUploadActivity,"File Uploaded..",Toast.LENGTH_SHORT).show()
-                                filepath = null
-                                finish()
-                                dismissProgessBar()
-                            }
-
-                    }
+//                    val key = databaseReference.push().key
+                    val key = userId
+                    databaseReference.child(key).setValue(fileVar)
+                        .addOnSuccessListener {
+                            Toast.makeText(this@FileUploadActivity,"File Uploaded..",Toast.LENGTH_SHORT).show()
+                            filepath = null
+                            finish()
+                            dismissProgessBar()
+                        }
                 }
             }
             .addOnProgressListener {
@@ -167,24 +174,24 @@ class FileUploadActivity : BaseActivity() {
         var isValid = true
 
         if (TextUtils.isEmpty(fileName)) {
-            binding.tilClassTitle.error = "Enter File Name"
+            binding.tilFileName.error = "Enter File Name"
             isValid = false
         } else {
-            binding.tilClassTitle.error = null
+            binding.tilFileName.error = null
         }
 
-        if (TextUtils.isEmpty(adate)) {
-            binding.tilSection.error = "Enter Assignment Date"
+        if (TextUtils.isEmpty(adate) && userId == creator) {
+            binding.tilAssignDate.error = "Enter Assignment Date"
             isValid = false
         } else {
-            binding.tilSection.error = null
+            binding.tilAssignDate.error = null
         }
 
         if (TextUtils.isEmpty(ldate)) {
-            binding.tilSubject.error = "Enter Submission Date"
+            binding.tilLDate.error = "Enter Submission Date"
             isValid = false
         } else {
-            binding.tilSubject.error = null
+            binding.tilLDate.error = null
         }
 
         if (filepath == null) {

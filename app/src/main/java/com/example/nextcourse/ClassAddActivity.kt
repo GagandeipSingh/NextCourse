@@ -21,6 +21,7 @@ class ClassAddActivity : AppCompatActivity() {
     private lateinit var classTitle:String
     private lateinit var subject:String
     private lateinit var section:String
+    private lateinit var userId:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Add this line to disable dark mode
@@ -63,23 +64,19 @@ class ClassAddActivity : AppCompatActivity() {
         classTitle = binding.classTitle.text.toString()
         section = binding.section.text.toString()
         subject = binding.subject.text.toString()
-        val classVar = ClassDomain1(classTitle,section,subject)
+        userId = auth.currentUser?.uid.toString()
+        val classVar = ClassDomain1(classTitle,section,subject,userId)
         if(validateClass(classTitle,section,subject)){
-            val userId = auth.currentUser?.uid
-            if (userId != null) {
-                val database = Firebase.database
-                val userRef = database.getReference("Classes").child(userId)
-                val classRef = userRef.push()
-                classRef.setValue(classVar).addOnSuccessListener {
-                    Toast.makeText(this,"Class Added..", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@ClassAddActivity,ClassesView::class.java))
-                    finish()
-                    }
-            }
-            else{
-                Toast.makeText(this,"Try Again..Later", Toast.LENGTH_SHORT).show()
-            }
-            }
+            val database = Firebase.database
+//                val userRef = database.getReference("Classes").child(userId)
+            val Ref = database.getReference("Classes")
+            val classRef = Ref.push()
+            classRef.setValue(classVar).addOnSuccessListener {
+                Toast.makeText(this,"Class Added..", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@ClassAddActivity,ClassesView::class.java))
+                finish()
+                }
+        }
         }
 
     private fun validateClass(classTitle: String, section: String, subject: String): Boolean {

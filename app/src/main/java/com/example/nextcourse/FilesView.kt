@@ -23,6 +23,8 @@ class FilesView : BaseActivity() {
     private lateinit var auth : FirebaseAuth
     private lateinit var bookBgDrawables : Array<Int>
     private lateinit var keyRef : String
+    private lateinit var userId : String
+    private lateinit var creator : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFilesViewBinding.inflate(layoutInflater)
@@ -57,6 +59,7 @@ class FilesView : BaseActivity() {
         binding.addSmall.setOnClickListener {
             val intent = Intent(this@FilesView,FileUploadActivity::class.java)
             intent.putExtra("classRef",keyRef)
+            intent.putExtra("creator",creator)
             startActivity(intent)
         }
 
@@ -71,14 +74,27 @@ class FilesView : BaseActivity() {
 
     private fun retrieveFiles() {
         showProgressBar()
-        val userId = auth.currentUser?.uid
-        if (userId != null) {
-            val databaseRef = FirebaseDatabase.getInstance().getReference("Classes").child(userId).child("$keyRef/Files")
-            databaseRef.addValueEventListener(object : ValueEventListener {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    dataList.clear() // Clear the existing list
-                    var count = 0
+        userId = auth.currentUser?.uid.toString()
+        val classRef = FirebaseDatabase.getInstance().getReference("Classes").child(keyRef)
+        classRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val classData =  dataSnapshot.getValue(ClassDomain1::class.java)
+                    classData?.let {
+                        creator = it.creator
+                    }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle error
+            }
+        })
+
+        val databaseRef = FirebaseDatabase.getInstance().getReference("Classes").child("$keyRef/Files")
+        databaseRef.addValueEventListener(object : ValueEventListener {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                dataList.clear() // Clear the existing list
+                var count = 0
                     for (filesSnapshot in dataSnapshot.children) {
                         val filesData = filesSnapshot.getValue(FileDomain2::class.java)
                         filesData?.let {
@@ -88,16 +104,23 @@ class FilesView : BaseActivity() {
                             val pic2 = bookBgDrawables[count % 6]
                             val fileUri = it.uri
                             count++
-                            dataList.add(Domain2(fileName, adate, ldate, pic2,fileUri))
+                            if(userId == creator){
+                                dataList.add(Domain2(fileName, adate, ldate, pic2,fileUri))
+                            }
+                            else if(userId == filesSnapshot.key || creator == filesSnapshot.key){
+                                dataList.add(Domain2(fileName, adate, ldate, pic2,fileUri))
+                            }
+                            else{
+
+                            }
                         }
                     }
                     adapter2.notifyDataSetChanged() // Notify the adapter
                     dismissProgessBar()
-                }
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.w(ContentValues.TAG, "loadFiles:onCancelled", databaseError.toException())
-                }
-            })
-        }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(ContentValues.TAG, "loadFiles:onCancelled", databaseError.toException())
+            }
+        })
     }
 }

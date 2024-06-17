@@ -128,29 +128,55 @@ class ClassesView : BaseActivity() {
             classesRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     dataList.clear()
-                    for (userSnapshot in dataSnapshot.children) {
-                        for (classSnapshot in userSnapshot.children) {
+
+                        for (classSnapshot in dataSnapshot.children) {
                             val classData = classSnapshot.getValue(ClassDomain1::class.java)
                             classData?.let {
                                 val classTitle = it.classTitle
                                 val section = it.section
                                 val subject = it.subject
+                                val creator = it.creator
                                 val key = classSnapshot.key.toString()
                                 val pic1 = bookDrawables[count % 6]
                                 val pic2 = bookBgDrawables[count % 6]
                                 count++
 
                                 // Check if the user is the creator or a student of the class
-                                if (userSnapshot.key == userId || classSnapshot.child("Students").hasChild(userId)) {
+                                if (creator == userId || classSnapshot.child("Students").hasChild(userId)) {
                                     dataList.add(Domain1(classTitle, section, subject, key, pic1, pic2))
                                     Log.d(ContentValues.TAG, "Class Name: $classTitle, Section: $section, Subject: $subject, Picture 1: $pic1, Picture 2: $pic2")
                                 }
                             }
                         }
-                    }
+
                     adapter1.updateData(dataList)  // Update the adapter with the new data
                     dismissProgessBar()
                 }
+//                override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                    dataList.clear()
+//                    for (userSnapshot in dataSnapshot.children) {
+//                        for (classSnapshot in userSnapshot.children) {
+//                            val classData = classSnapshot.getValue(ClassDomain1::class.java)
+//                            classData?.let {
+//                                val classTitle = it.classTitle
+//                                val section = it.section
+//                                val subject = it.subject
+//                                val key = classSnapshot.key.toString()
+//                                val pic1 = bookDrawables[count % 6]
+//                                val pic2 = bookBgDrawables[count % 6]
+//                                count++
+//
+//                                // Check if the user is the creator or a student of the class
+//                                if (userSnapshot.key == userId || classSnapshot.child("Students").hasChild(userId)) {
+//                                    dataList.add(Domain1(classTitle, section, subject, key, pic1, pic2))
+//                                    Log.d(ContentValues.TAG, "Class Name: $classTitle, Section: $section, Subject: $subject, Picture 1: $pic1, Picture 2: $pic2")
+//                                }
+//                            }
+//                        }
+//                    }
+//                    adapter1.updateData(dataList)  // Update the adapter with the new data
+//                    dismissProgessBar()
+//                }
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     // Handle possible errors.
