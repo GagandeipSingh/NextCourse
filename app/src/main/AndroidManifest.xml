@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.NextCourse"
+        tools:targetApi="31">
+        <activity
+            android:name=".activities.AnnouncementAdd"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".activities.AnnounceDescView"
+            android:exported="false" />
+        <activity
+            android:name=".activities.AnnouncementsView"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".activities.JoinClassActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.FileUploadActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".activities.FilesView"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ClassAddActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".activities.ClassesView"
+            android:exported="false" />
+        <activity
+            android:name=".activities.Splash"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".progress.ProgressBar"
+            android:exported="false" />
+        <activity
+            android:name=".progress.BaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ForgetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SignInActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>

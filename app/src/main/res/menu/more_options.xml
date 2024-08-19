@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_edit"
+        android:title="@string/edit" />
+    <item
+        android:id="@+id/action_delete"
+        android:title="@string/delete" />
+    <item
+        android:id="@+id/action_share"
+        android:title="@string/share" />
+    <item
+        android:id="@+id/action_unenrol"
+        android:title="@string/unenrol" />
+    <item
+        android:id="@+id/action_announcement"
+        android:title="@string/open" />
+    <item
+        android:id="@+id/action_important"
+        android:title="@string/important" />
+    <item
+        android:id="@+id/action_unimp"
+        android:title="@string/unimp" />
+</menu>
