@@ -56,3 +56,19 @@ Productivity Tools:
 - Organized Workload Management: Supports students with tools to stay organized and productive.
 
 By providing a user-friendly and collaborative platform, this project enhances the educational experience for both instructors and students, fostering an efficient and supportive online learning environment.
+
+![Screenshot 2024-11-12 222351](https://github.com/user-attachments/assets/443ce3c0-6133-4098-bc97-2aa1d56c6256)
+
+![Screenshot 2024-11-12 222406](https://github.com/user-attachments/assets/8d36861a-d494-451f-ba24-ec54946437eb)
+
+![Screenshot 2024-11-12 222523](https://github.com/user-attachments/assets/be4ac3b3-d086-4c85-b99c-cf87c209eb98)
+
+![Screenshot 2024-11-12 222541](https://github.com/user-attachments/assets/de95deb6-469f-476b-b044-6ac22ec34b05)
+
+![Screenshot 2024-11-12 222556](https://github.com/user-attachments/assets/3dbb60a6-d324-43fb-897d-59244d763a66)
+
+![Screenshot 2024-11-12 222612](https://github.com/user-attachments/assets/10b7e7d0-6d6f-4dc2-b9cc-10e9e7a7b4e5)
+
+![Screenshot 2024-11-12 222629](https://github.com/user-attachments/assets/91f5a3fb-aa34-4623-ac17-e8c1d49e3a54)
+
+![Screenshot 2024-11-12 222722](https://github.com/user-attachments/assets/f931fb3e-b405-4718-aa21-431d1d53df9d)
